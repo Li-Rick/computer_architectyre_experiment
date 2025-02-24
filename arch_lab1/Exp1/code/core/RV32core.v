@@ -55,7 +55,7 @@ module  RV32core(
     
     add_32 add_IF(.a(PC_IF),.b(32'd4),.c(PC_4_IF));
 
-    MUX2T1_32 mux_IF(.I0(),.I1(),.s(),.o());        //to fill sth. in ()
+    MUX2T1_32 mux_IF(.I0(PC_4_IF),.I1(jump_PC_ID),.s(Branch_ctrl),.o(next_PC_IF));        //to fill sth. in ()
 
     ROM_D inst_rom(.a(PC_IF[8:2]),.spo(inst_IF));
 
@@ -78,17 +78,17 @@ module  RV32core(
         .Debug_addr(debug_addr[4:0]),.Debug_regs(Debug_regs));
     
     ImmGen imm_gen(.ImmSel(ImmSel_ctrl),.inst_field(inst_ID),.Imm_out(Imm_out_ID));
-    
-    MUX4T1_32 mux_forward_A(.I0(),.I1(),.I2(),.I3(),        //to fill sth. in ()
-        .s(),.o());
-    
-    MUX4T1_32 mux_forward_B(.I0(),.I1(),.I2(),.I3(),        //to fill sth. in ()
-        .s(),.o());
+    //实现数据A的前递，由forward_ctrl_A控制
+    MUX4T1_32 mux_forward_A(.I0(rs1_data_reg),.I1(ALUout_EXE),.I2(ALUA_MEM),.I3(Datain_MEM),        //to fill sth. in ()
+        .s(forward_ctrl_A),.o(rs1_data_ID));
+     //实现数据B的前递，由forward_ctrl_B控制
+    MUX4T1_32 mux_forward_B(.I0(rs2_data_reg),.I1(ALUout_EXE),.I2(ALUA_MEM),.I3(Datain_MEM),        //to fill sth. in ()
+        .s(forward_ctrl_B),.o(rs2_data_ID));
     
     MUX2T1_32 mux_branch_ID(.I0(PC_ID),.I1(rs1_data_ID),.s(JALR),.o(addA_ID));
 
     add_32 add_branch_ID(.a(addA_ID),.b(Imm_out_ID),.c(jump_PC_ID));
-
+    //比较模块
     cmp_32 cmp_ID(.a(rs1_data_ID),.b(rs2_data_ID),.ctrl(cmp_ctrl),.c(cmp_res_ID));        
     
     HazardDetectionUnit hazard_unit(.clk(debug_clk),.Branch_ID(Branch_ctrl),.rs1use_ID(rs1use_ctrl),
@@ -113,15 +113,15 @@ module  RV32core(
         .ALUSrc_A_EX(ALUSrc_A_EXE),.ALUSrc_B_EX(ALUSrc_B_EXE),.ALUC_EX(ALUControl_EXE),
         .DatatoReg_EX(DatatoReg_EXE),.RegWrite_EX(RegWrite_EXE),.WR_EX(mem_w_EXE),
         .u_b_h_w_EX(u_b_h_w_EXE),.MIO_EX(MIO_EXE));
-    
-    MUX2T1_32 mux_A_EXE(.I0(),.I1(),.s(),.o());     //to fill sth. in ()
+    //rs_data和PC位置
+    MUX2T1_32 mux_A_EXE(.I0(rs1_data_EXE),.I1(PC_EXE),.s(ALUSrc_A_EXE),.o(ALUA_EXE));     //to fill sth. in ()
 
-    MUX2T1_32 mux_B_EXE(.I0(),.I1(),.s(),.o());       //to fill sth. in ()
+    MUX2T1_32 mux_B_EXE(.I0(rs2_data_EXE),.I1(inst_EXE),.s(ALUSrc_B_EXE),.o(ALUB_EXE));       //to fill sth. in ()
 
     ALU alu(.A(ALUA_EXE),.B(ALUB_EXE),.Control(ALUControl_EXE),
         .res(ALUout_EXE),.zero(ALUzero_EXE),.overflow(ALUoverflow_EXE));
-    
-   MUX2T1_32 mux_forward_EXE(.I0(),.I1(),.s(),.o());        //to fill sth. in ()
+    //提前写
+   MUX2T1_32 mux_forward_EXE(.I0(rs2_data_EXE),.I1(Datain_MEM),.s(forward_ctrl_ls),.o(Dataout_EXE));        //to fill sth. in ()
 
 
     // MEM

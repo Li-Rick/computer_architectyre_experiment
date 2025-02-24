@@ -11,5 +11,8 @@ module HazardDetectionUnit(
     output[1:0] forward_ctrl_A, forward_ctrl_B
 );
             //according to the diagram, design the Hazard Detection Unit
-
+    parameter hazard_optype_ALU = 2'd1;
+    parameter hazard_optype_LOAD = 2'd2;
+    parameter hazard_optype_STORE = 2'd3;
+    
 endmodule
