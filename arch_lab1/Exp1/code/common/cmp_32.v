@@ -12,12 +12,12 @@ module cmp_32(  input [31:0] a,
     parameter cmp_GE  = 3'b101;
     parameter cmp_GEU = 3'b110;
 
-    wire res_EQ  = a == b;
-    wire res_NE  = ~res_EQ;
-    wire res_LT  = (a[31] & ~b[31]) || (~(a[31] ^ b[31]) && a < b);
-    wire res_LTU = a < b;
-    wire res_GE  = ~res_LT;
-    wire res_GEU = ~res_LTU;
+    wire res_EQ  = a == b;//相等
+    wire res_NE  = ~res_EQ;//不等
+    wire res_LT  = (a[31] & ~b[31]) || (~(a[31] ^ b[31]) && a < b);//less than
+    wire res_LTU = a < b;//无符号小于
+    wire res_GE  = ~res_LT;//great than
+    wire res_GEU = ~res_LTU;//无符号大于
 
     wire EQ  = ctrl == cmp_EQ ; 
     wire NE  = ctrl == cmp_NE ; 
@@ -26,6 +26,6 @@ module cmp_32(  input [31:0] a,
     wire GE  = ctrl == cmp_GE ; 
     wire GEU = ctrl == cmp_GEU;
 
-    assign c = ();          //to fill sth. in ()
+    assign c = ((EQ & res_EQ) | (NE & res_NE) | (LT & res_LT) | (LTU | res_LTU) | (GE & res_GE) | (GEU & res_GEU));          //to fill sth. in ()
 
 endmodule
