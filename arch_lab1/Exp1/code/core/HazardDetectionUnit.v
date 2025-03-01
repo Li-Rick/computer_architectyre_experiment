@@ -15,4 +15,23 @@ module HazardDetectionUnit(
     parameter hazard_optype_LOAD = 2'd2;
     parameter hazard_optype_STORE = 2'd3;
     
+    reg[1:0] hazard_optype_EXE, hazard_optype_MEM;
+    always@(posedge clk) begin
+    hazard_optype_MEM <= hazard_optype_EXE & {2{~reg_EM_flush}};
+    hazard_optype_EXE <= hazard_optype_ID & {2{~reg_DE_flush}};
+    end
+
+    parameter hazard_optype_ALU = 2'd1;
+    parameter hazard_optype_LOAD = 2'd2;
+    parameter hazard_optype_STORE = 2'd3;
+
+    wire rs1_forward_1     = ... && hazard_optype_EXE == hazard_optype_ALU;
+    wire rs1_forward_stall = ...&& hazard_optype_EXE == hazard_optype_LOAD && hazard_optype_ID !=hazard_optype_STORE;
+    wire rs1_forward_2     = ... && hazard_optype_MEM == hazard_optype_ALU;
+    wire rs1_forward_3     = ... && hazard_optype_MEM == hazard_optype_LOAD;
+
+    assign forward_ctrl_A = ...
+    assign forward_ctrl_B = ...
+    assign forward_ctrl_ls = ...
+
 endmodule

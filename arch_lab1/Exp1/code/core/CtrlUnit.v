@@ -84,8 +84,8 @@ module CtrlUnit(
     wire L_valid = LW | LH | LB | LHU | LBU;
     wire S_valid = SW | SH | SB;
 
-
-    assign Branch = ;                       //to fill sth. in 
+    //发生了跳转
+    assign Branch = B_valid & cmp_res | JAL | JALR;                       //to fill sth. in 
 
     parameter Imm_type_I = 3'b001;
     parameter Imm_type_B = 3'b010;
@@ -99,11 +99,11 @@ module CtrlUnit(
                     {3{LUI | AUIPC}}              & Imm_type_U ;
 
 
-    assign cmp_ctrl = ;                         //to fill sth. in 
-
-    assign ALUSrc_A = ;                         //to fill sth. in 
-
-    assign ALUSrc_B = ;                         //to fill sth. in 
+    assign cmp_ctrl = (opcode == 7'b1100011)?funct3 :3'b011;                         //to fill sth. in 
+    //ALUSrc_A为1时选择PC
+    assign ALUSrc_A = JAL | JALR | AUIPC;                         //to fill sth. in 
+    //ALUSrc_B为1时选择立即数
+    assign ALUSrc_B = I_valid | L_valid | S_valid | LUI | AUIPC;                         //to fill sth. in 
 
     parameter ALU_ADD  = 4'b0001;
     parameter ALU_SUB  = 4'b0010;
@@ -137,10 +137,10 @@ module CtrlUnit(
     assign mem_w = S_valid;
 
     assign MIO = L_valid | S_valid;
+    //判断指令是否需要用RS1和RS2
+    assign rs1use =  R_valid | I_valid | S_valid | B_valid | L_valid | JALR;                        //to fill sth.in 
 
-    assign rs1use =  ;                        //to fill sth. in 
-
-    assign rs2use = ;                         //to fill sth. in 
+    assign rs2use = R_valid | S_valid | B_valid;                         //to fill sth. in 
 
     assign hazard_optype = ;                  //to fill sth. in 
 
