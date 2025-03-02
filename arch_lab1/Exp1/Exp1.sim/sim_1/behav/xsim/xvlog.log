@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/vivado_projects/computer_architectyre_experiment/arch_lab1/Exp1/code/core/ALU.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ALU
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/vivado_projects/computer_architectyre_experiment/arch_lab1/Exp1/code/auxillary/CPUTEST.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module CPUTEST
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/vivado_projects/computer_architectyre_experiment/arch_lab1/Exp1/code/core/CtrlUnit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module CtrlUnit
+ERROR: [VRFC 10-2951] 'R_valid' is not a constant [C:/vivado_projects/computer_architectyre_experiment/arch_lab1/Exp1/code/core/CtrlUnit.v:146]
+ERROR: [VRFC 10-8530] module 'CtrlUnit' is ignored due to previous errors [C:/vivado_projects/computer_architectyre_experiment/arch_lab1/Exp1/code/core/CtrlUnit.v:4]

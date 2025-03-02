@@ -141,7 +141,8 @@ module CtrlUnit(
     assign rs1use =  R_valid | I_valid | S_valid | B_valid | L_valid | JALR;                        //to fill sth.in 
 
     assign rs2use = R_valid | S_valid | B_valid;                         //to fill sth. in 
-
-    assign hazard_optype = ;                  //to fill sth. in 
-
+    //根据指令的类型判断冲突：ALU-1，LOAD-2，STORE-3
+    assign hazard_optype = {2{R_valid | I_valid | JAL | JALR | LUI | AUIPC}} & 2'd1 | 
+{2{L_valid}} & 2'd2 | {2{S_valid}} & 2'd3;                  //to fill sth. in 
+    
 endmodule
