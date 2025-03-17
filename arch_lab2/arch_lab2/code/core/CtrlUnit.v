@@ -91,6 +91,7 @@ module CtrlUnit(
     wire CSRRCI = CSRop & funct3_7;
     //当inst等于特定值时将MRET置1，返回指令，从异常状态下返回
     assign MRET = inst == 32'b0011000_00010_00000_000_00000_1110011;
+    //遇到该指令跳去异常处理模块
     wire ECALL = inst == 32'b0111_0011;
     //判断指令类型
     wire R_valid = AND | OR | ADD | XOR | SLL | SRL | SRA | SUB | SLT | SLTU;
