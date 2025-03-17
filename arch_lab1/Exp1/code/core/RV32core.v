@@ -79,10 +79,10 @@ module  RV32core(
     
     ImmGen imm_gen(.ImmSel(ImmSel_ctrl),.inst_field(inst_ID),.Imm_out(Imm_out_ID));
     //实现数据A的前递，由forward_ctrl_A控制
-    MUX4T1_32 mux_forward_A(.I0(rs1_data_reg),.I1(ALUout_EXE),.I2(ALUA_MEM),.I3(Datain_MEM),        //to fill sth. in ()
+    MUX4T1_32 mux_forward_A(.I0(rs1_data_reg),.I1(ALUout_EXE),.I2(ALUout_MEM),.I3(Datain_MEM),        //to fill sth. in ()
         .s(forward_ctrl_A),.o(rs1_data_ID));
      //实现数据B的前递，由forward_ctrl_B控制
-    MUX4T1_32 mux_forward_B(.I0(rs2_data_reg),.I1(ALUout_EXE),.I2(ALUA_MEM),.I3(Datain_MEM),        //to fill sth. in ()
+    MUX4T1_32 mux_forward_B(.I0(rs2_data_reg),.I1(ALUout_EXE),.I2(ALUout_MEM),.I3(Datain_MEM),        //to fill sth. in ()
         .s(forward_ctrl_B),.o(rs2_data_ID));
     
     MUX2T1_32 mux_branch_ID(.I0(PC_ID),.I1(rs1_data_ID),.s(JALR),.o(addA_ID));
@@ -116,7 +116,7 @@ module  RV32core(
     //rs_data和PC位置
     MUX2T1_32 mux_A_EXE(.I0(rs1_data_EXE),.I1(PC_EXE),.s(ALUSrc_A_EXE),.o(ALUA_EXE));     //to fill sth. in ()
 
-    MUX2T1_32 mux_B_EXE(.I0(rs2_data_EXE),.I1(inst_EXE),.s(ALUSrc_B_EXE),.o(ALUB_EXE));       //to fill sth. in ()
+    MUX2T1_32 mux_B_EXE(.I0(rs2_data_EXE),.I1(Imm_EXE),.s(ALUSrc_B_EXE),.o(ALUB_EXE));       //to fill sth. in ()
 
     ALU alu(.A(ALUA_EXE),.B(ALUB_EXE),.Control(ALUControl_EXE),
         .res(ALUout_EXE),.zero(ALUzero_EXE),.overflow(ALUoverflow_EXE));

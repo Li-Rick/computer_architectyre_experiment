@@ -1,2 +1,0 @@
-# computer_architectyre_experiment
-vivado_projects
